@@ -11,21 +11,21 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   LuHome,
-  LuLineChart,
   LuPackage,
-  LuPackage2,
   LuPanelLeft,
-  LuShoppingCart,
-  LuUsers2,
+  LuTrash2,
+  LuUploadCloud,
 } from "react-icons/lu";
 import { useBreadcrumbStore } from "@/store";
+import { useState } from "react";
 
 const Header = () => {
   const { breadcrumbs } = useBreadcrumbStore();
+  const [open, setOpen] = useState<boolean>(false);
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-      <Sheet>
+      <Sheet open={open} onOpenChange={(value) => setOpen(value)}>
         <SheetTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">
             <LuPanelLeft className="h-5 w-5" />
@@ -35,47 +35,39 @@ const Header = () => {
         <SheetContent side="left" className="sm:max-w-xs">
           <nav className="grid gap-6 text-lg font-medium">
             <Link
-              href="#"
+              href="/"
               className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
             >
-              <LuPackage2 className="h-5 w-5 transition-all group-hover:scale-110" />
-              <span className="sr-only">Acme Inc</span>
+              <LuTrash2 className="h-5 w-5 transition-all group-hover:scale-110" />
+              <span className="sr-only">WMI</span>
             </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <LuHome className="h-5 w-5" />
-              Dashboard
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-foreground"
-            >
-              <LuShoppingCart className="h-5 w-5" />
-              Orders
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <LuPackage className="h-5 w-5" />
-              Products
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <LuUsers2 className="h-5 w-5" />
-              Customers
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <LuLineChart className="h-5 w-5" />
-              Settings
-            </Link>
+            {[
+              {
+                href: "/",
+                icon: <LuHome className="h-5 w-5" />,
+                label: "Home",
+              },
+              {
+                href: "/generate-file",
+                icon: <LuPackage className="h-5 w-5" />,
+                label: "Generate File",
+              },
+              {
+                href: "/send-to-void",
+                icon: <LuUploadCloud className="h-5 w-5" />,
+                label: "Upload File",
+              },
+            ].map((item, idx) => (
+              <Link key={idx} href={item.href}>
+                <div
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                >
+                  {item.icon}
+                  {item.label}
+                </div>
+              </Link>
+            ))}
           </nav>
         </SheetContent>
       </Sheet>

@@ -12,6 +12,7 @@ export const uploadRouter = createTRPCRouter({
           }),
         ),
         userId: z.string(),
+        response: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

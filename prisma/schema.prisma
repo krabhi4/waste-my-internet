@@ -15,4 +15,5 @@ model Upload {
     size     Int?
     fileName String?
     userId   String?
+    response Json?
 }

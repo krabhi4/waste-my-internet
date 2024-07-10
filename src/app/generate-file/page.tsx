@@ -89,9 +89,9 @@ function GenerateFilePage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100">
+    <div className="flex min-h-[80dvh] flex-col items-center justify-center bg-gray-100">
       <div className="rounded-lg bg-white p-8 shadow-md">
-        <div className="">
+        <div>
           <h2 className="mb-2 text-center text-xl font-semibold">
             Generate Empty File
           </h2>
