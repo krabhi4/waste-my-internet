@@ -39,9 +39,9 @@ const Sidebar = () => {
             label: "Generate File",
           },
           {
-            href: "/ddestroy-internet",
+            href: "/send-to-void",
             icon: <LuUploadCloud className="h-5 w-5" />,
-            label: "Destroy Internet",
+            label: "Upload File",
           },
         ].map((item, idx) => (
           <Tooltip key={idx}>

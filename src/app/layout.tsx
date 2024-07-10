@@ -27,7 +27,7 @@ export default function RootLayout({
           <MantineProvider>
             <TooltipProvider>
               <MainLayout>{children}</MainLayout>
-              <Toaster closeButton duration={2500} position="bottom-right" />
+              <Toaster closeButton duration={5000} position="bottom-right" />
             </TooltipProvider>
           </MantineProvider>
         </TRPCReactProvider>
