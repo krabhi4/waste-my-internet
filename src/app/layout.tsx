@@ -4,6 +4,8 @@ import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "@/trpc/react";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import MainLayout from "@/components/main-layout";
 
 export const metadata: Metadata = {
   title: "Waste My Internet",
@@ -17,7 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <TooltipProvider>
+            <MainLayout>{children}</MainLayout>
+          </TooltipProvider>
+        </TRPCReactProvider>
       </body>
     </html>
   );
