@@ -15,11 +15,38 @@ import React, { useEffect, useState } from "react";
 import { LuLoader2 } from "react-icons/lu";
 import { toast } from "sonner";
 import axios from "axios";
+import { Progress } from "@/components/ui/progress";
+
+interface FileUploadResponse {
+  autoDelete: boolean;
+  created: string;
+  description: string | null;
+  downloads: number;
+  expires: string;
+  id: string;
+  key: string;
+  link: string;
+  maxDownloads: number;
+  mimeType: string;
+  modified: string;
+  name: string;
+  nodeType: string;
+  path: string;
+  planId: number;
+  private: boolean;
+  screeningStatus: string;
+  size: number;
+  status: number;
+  success: boolean;
+  title: string | null;
+}
 
 function SendToVoidPage() {
   const [multiple, setMultiple] = useState<boolean>(false);
   const [file, setFile] = useState<File | File[] | null>(null);
   const [ip, setIp] = useState<string>("Loading...");
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
     const getIp = async () => {
@@ -46,29 +73,71 @@ function SendToVoidPage() {
     },
   });
 
-  console.log("file", file);
+  //   console.log("file", file);
 
   const handleUpload = async () => {
-    if (!multiple && file) {
-      upload({
-        file: [
-          {
-            size: Array.isArray(file) ? file[0]?.size ?? 0 : file?.size,
-            fileName: Array.isArray(file) ? file[0]?.name ?? "" : file?.name,
-          },
-        ],
-        userId: !isNaN(Number(ip.split(".")[0])) ? ip : "",
-      });
+    if (!file) return;
+
+    const formData = new FormData();
+    if (Array.isArray(file)) {
+      file.forEach((f, index) => formData.append(`file${index}`, f));
+    } else {
+      formData.append("file", file);
     }
-    if (multiple && Array.isArray(file) && file.length > 1) {
-      upload({
-        file: file.map((f) => ({
-          fileName: f.name,
-          size: f.size,
-        })),
-        userId: !isNaN(Number(ip.split(".")[0])) ? ip : "",
-      });
-    }
+
+    setIsUploading(true);
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://file.io", true);
+
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) {
+        const percentComplete = (event.loaded / event.total) * 100;
+        setProgress(percentComplete);
+      }
+    };
+
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        const response = JSON.parse(xhr.responseText) as FileUploadResponse;
+        if (response.success) {
+          if (!multiple && file) {
+            upload({
+              file: [
+                {
+                  size: Array.isArray(file) ? file[0]?.size ?? 0 : file?.size,
+                  fileName: Array.isArray(file)
+                    ? file[0]?.name ?? ""
+                    : file?.name,
+                },
+              ],
+              userId: !isNaN(Number(ip.split(".")[0])) ? ip : "",
+            });
+          }
+          if (multiple && Array.isArray(file) && file.length > 1) {
+            upload({
+              file: file.map((f) => ({
+                fileName: f.name,
+                size: f.size,
+              })),
+              userId: !isNaN(Number(ip.split(".")[0])) ? ip : "",
+            });
+          }
+        }
+        setFile(null);
+      } else {
+        console.error("Upload failed:", xhr.statusText);
+        toast.error(`Error uploading file: ${xhr.statusText}`);
+      }
+      setIsUploading(false);
+    };
+
+    xhr.onerror = function () {
+      console.error("Upload error:", xhr.statusText);
+      toast.error(`Error uploading file: ${xhr.statusText}`);
+      setIsUploading(false);
+    };
+
+    xhr.send(formData);
   };
 
   return (
@@ -97,14 +166,18 @@ function SendToVoidPage() {
               }}
             />
           </div>
+          {progress > 0 && <Progress className="mt-5" value={progress} />}
         </CardContent>
         <CardFooter className="justify-center">
           <Button
-            disabled={!file || isPending}
+            disabled={!file || isPending || isUploading}
             onClick={handleUpload}
             className="w-full max-w-32"
           >
-            {isPending && <LuLoader2 className="mr-2 animate-spin" />}Upload
+            {isUploading || isPending ? (
+              <LuLoader2 className="mr-2 animate-spin" />
+            ) : null}
+            Upload
           </Button>
         </CardFooter>
       </Card>
