@@ -1,4 +1,7 @@
 import "@/styles/globals.css";
+import "@mantine/core/styles.css";
+
+import { MantineProvider } from "@mantine/core";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
@@ -6,6 +9,7 @@ import { type Metadata } from "next";
 import { TRPCReactProvider } from "@/trpc/react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import MainLayout from "@/components/main-layout";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Waste My Internet",
@@ -20,9 +24,12 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
         <TRPCReactProvider>
-          <TooltipProvider>
-            <MainLayout>{children}</MainLayout>
-          </TooltipProvider>
+          <MantineProvider>
+            <TooltipProvider>
+              <MainLayout>{children}</MainLayout>
+              <Toaster closeButton duration={2500} position="bottom-right" />
+            </TooltipProvider>
+          </MantineProvider>
         </TRPCReactProvider>
       </body>
     </html>
