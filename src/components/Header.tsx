@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -7,7 +8,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
@@ -29,8 +29,11 @@ import {
   LuShoppingCart,
   LuUsers2,
 } from "react-icons/lu";
+import { useBreadcrumbStore } from "@/store";
 
 const Header = () => {
+  const { breadcrumbs } = useBreadcrumbStore();
+
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
       <Sheet>
@@ -89,21 +92,16 @@ const Header = () => {
       </Sheet>
       <Breadcrumb className="hidden md:flex">
         <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="#">Dashboard</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="#">Orders</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Recent Orders</BreadcrumbPage>
-          </BreadcrumbItem>
+          {breadcrumbs.map((breadcrumb, idx) => (
+            <>
+              <BreadcrumbItem key={idx}>
+                <BreadcrumbLink asChild>
+                  <Link href={breadcrumb.link}>{breadcrumb.label}</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              {idx < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
+            </>
+          ))}
         </BreadcrumbList>
       </Breadcrumb>
       <div className="relative ml-auto flex-1 md:grow-0">
