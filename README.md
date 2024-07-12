@@ -36,7 +36,7 @@ This project is intended for educational and entertainment purposes only. Please
 
 ## Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](link-to-your-issues-page).
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](issues).
 
 ## License
 
