@@ -1,30 +1,43 @@
-# Create T3 App
+# Waste My Internet
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A fun project to generate and upload files, demonstrating network and memory usage.
 
-## What's next? How do I make an app with this?
+## Features
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+### 1. Generate File
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+- Create and download empty files of various sizes
+- Available size units: KB, MB, GB
+- **Caution:** This feature utilizes free RAM. Use responsibly.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+### 2. Upload File
 
-## Learn More
+- Upload files to test network usage
+- Files are not stored anywhere
+- **Warning:** Do not upload confidential or private files for safety reasons
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## Usage
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+### Generate File
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+1. Navigate to the "generate-file" page
+2. Select the desired file size and unit (KB, MB, or GB)
+3. Click "Generate" to create and download the empty file
 
-## How do I deploy this?
+### Upload File
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
-# waste-my-internet
+1. Go to the "upload-file" page
+2. Select a file from your device
+3. Click "Upload" to simulate file upload and network usage
+
+## Disclaimer
+
+This project is intended for educational and entertainment purposes only. Please use responsibly and be aware of your system's limitations and network constraints.
+
+## Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](link-to-your-issues-page).
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
