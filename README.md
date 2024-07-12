@@ -36,7 +36,7 @@ This project is intended for educational and entertainment purposes only. Please
 
 ## Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](issues).
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page]((https://github.com/krabhi4/waste-my-internet/issues)).
 
 ## License
 
