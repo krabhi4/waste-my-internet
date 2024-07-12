@@ -1,4 +1,3 @@
-"use client";
 import Link from "next/link";
 import {
   Tooltip,
@@ -9,14 +8,11 @@ import {
   LuHome,
   LuPackage,
   LuUploadCloud,
-  LuLock,
   LuTrash2,
 } from "react-icons/lu";
-import { useSearchParams } from "next/navigation";
+import AdminLogo from "./admin/AdminLogo";
 
 const Sidebar = () => {
-  const admin = useSearchParams().get("admin");
-
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
@@ -58,22 +54,7 @@ const Sidebar = () => {
           </Tooltip>
         ))}
       </nav>
-      {admin === "true" && (
-        <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="/admin-login"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <LuLock className="h-5 w-5" />
-                <span className="sr-only">Admin Login</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Admin Login</TooltipContent>
-          </Tooltip>
-        </nav>
-      )}
+      <AdminLogo />
     </aside>
   );
 };
