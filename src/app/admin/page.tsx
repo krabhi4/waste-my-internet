@@ -58,7 +58,11 @@ function AdminLoginPage() {
 
   const { mutate, isPending } = api.upload.delete.useMutation({
     onSuccess() {
-      toast.success("Files deleted successfully");
+      toast.success(
+        selectedRowIds.length > 1
+          ? "Files deleted successfully"
+          : "File deleted successfully",
+      );
       setSelectedRowIds([]);
       setRowSelection({});
       void refetch();
