@@ -2,7 +2,6 @@
 import { api } from "@/trpc/react";
 import { useState } from "react";
 import { toast } from "sonner";
-import GetIp from "./GetIp";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -52,7 +51,7 @@ const UploadFile = () => {
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
 
-  const { ip } = GetIp();
+  const { data: ip } = api.upload.getIp.useQuery();
 
   const { mutate: upload, isPending } = api.upload.upload.useMutation({
     onSuccess() {
@@ -99,7 +98,7 @@ const UploadFile = () => {
                   : file?.name,
               },
             ],
-            userId: !isNaN(Number(ip.split(".")[0])) ? ip : "",
+            userId: !isNaN(Number(ip?.split(".")[0])) ? ip ?? "" : "",
             response: JSON.stringify(response),
           });
         }
@@ -109,7 +108,7 @@ const UploadFile = () => {
               fileName: f.name,
               size: f.size,
             })),
-            userId: !isNaN(Number(ip.split(".")[0])) ? ip : "",
+            userId: !isNaN(Number(ip?.split(".")[0])) ? ip ?? "" : "",
             response: JSON.stringify(response),
           });
         }

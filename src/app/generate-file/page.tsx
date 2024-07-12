@@ -1,4 +1,5 @@
 "use client";
+import BreadcrumbSet from "@/components/BreadcrumbSet";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -89,76 +90,79 @@ function GenerateFilePage() {
   };
 
   return (
-    <div className="flex min-h-[80dvh] flex-col items-center justify-center bg-gray-100">
-      <div className="rounded-lg bg-white p-8 shadow-md">
-        <div>
-          <h2 className="mb-2 text-center text-xl font-semibold">
-            Generate Empty File
-          </h2>
-          <div className="flex w-full items-center">
-            <NumberInput
-              styles={{
-                input: {
-                  borderTopLeftRadius: "6px",
-                  borderBottomLeftRadius: "6px",
-                  borderTopRightRadius: "0",
-                  borderBottomRightRadius: "0",
-                  borderRightWidth: "0",
-                  height: "2.5rem",
-                  borderColor: "#e2e8f0",
-                },
-              }}
-              withKeyboardEvents={false}
-              allowDecimal={false}
-              allowLeadingZeros={false}
-              allowNegative={false}
-              hideControls
-              className="h-10 w-full"
-              value={fileSize}
-              onChange={(value) => setFileSize(value as number)}
-              placeholder="File Size"
-            />
-            <Select
-              value={fileSizeUnit}
-              onValueChange={(value) =>
-                setFileSizeUnit(value as "KB" | "MB" | "GB")
-              }
-            >
-              <SelectTrigger className="w-[180px] rounded-none rounded-r-md border-l-0">
-                <SelectValue placeholder="Size Unit" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="KB">KB</SelectItem>
-                <SelectItem value="MB">MB</SelectItem>
-                <SelectItem value="GB">GB</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+    <>
+      <BreadcrumbSet page="generate-file" />
+      <div className="flex min-h-[80dvh] flex-col items-center justify-center bg-gray-100">
+        <div className="rounded-lg bg-white p-8 shadow-md">
+          <div>
+            <h2 className="mb-2 text-center text-xl font-semibold">
+              Generate Empty File
+            </h2>
+            <div className="flex w-full items-center">
+              <NumberInput
+                styles={{
+                  input: {
+                    borderTopLeftRadius: "6px",
+                    borderBottomLeftRadius: "6px",
+                    borderTopRightRadius: "0",
+                    borderBottomRightRadius: "0",
+                    borderRightWidth: "0",
+                    height: "2.5rem",
+                    borderColor: "#e2e8f0",
+                  },
+                }}
+                withKeyboardEvents={false}
+                allowDecimal={false}
+                allowLeadingZeros={false}
+                allowNegative={false}
+                hideControls
+                className="h-10 w-full"
+                value={fileSize}
+                onChange={(value) => setFileSize(value as number)}
+                placeholder="File Size"
+              />
+              <Select
+                value={fileSizeUnit}
+                onValueChange={(value) =>
+                  setFileSizeUnit(value as "KB" | "MB" | "GB")
+                }
+              >
+                <SelectTrigger className="w-[180px] rounded-none rounded-r-md border-l-0">
+                  <SelectValue placeholder="Size Unit" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="KB">KB</SelectItem>
+                  <SelectItem value="MB">MB</SelectItem>
+                  <SelectItem value="GB">GB</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-          {progress > 0 && <Progress className="mt-5" value={progress} />}
+            {progress > 0 && <Progress className="mt-5" value={progress} />}
 
-          <div className="mt-5 flex items-center justify-center gap-x-3">
-            <Button
-              disabled={fileSize === 0 || isLoading}
-              onClick={generateAndDownloadFile}
-            >
-              {isLoading && <LuLoader2 className="mr-2 animate-spin" />}
-              Generate and Download File
-            </Button>
-            <Tooltip>
-              <TooltipTrigger>
-                <LuAlertTriangle color="red" />
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                {fileSize === 0 && "Please enter a valid file size."}
-                <br />
-                Caution: Please enter filesize less than your empty RAM!!!
-              </TooltipContent>
-            </Tooltip>
+            <div className="mt-5 flex items-center justify-center gap-x-3">
+              <Button
+                disabled={fileSize === 0 || isLoading}
+                onClick={generateAndDownloadFile}
+              >
+                {isLoading && <LuLoader2 className="mr-2 animate-spin" />}
+                Generate and Download File
+              </Button>
+              <Tooltip>
+                <TooltipTrigger>
+                  <LuAlertTriangle color="red" />
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  {fileSize === 0 && "Please enter a valid file size."}
+                  <br />
+                  Caution: Please enter filesize less than your empty RAM!!!
+                </TooltipContent>
+              </Tooltip>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

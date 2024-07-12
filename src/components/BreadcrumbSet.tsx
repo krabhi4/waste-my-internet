@@ -1,12 +1,15 @@
 "use client";
 
 import { useBreadcrumbStore } from "@/store";
-import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
-const BreadcrumbSet = ({ page }: { page: "home" | "dashboard" }) => {
-  const pathname = usePathname();
+const BreadcrumbSet = ({
+  page,
+}: {
+  page: "home" | "generate-file" | "upload-file" | "admin";
+}) => {
   const { setBreadcrumbs } = useBreadcrumbStore();
+
   useEffect(
     () =>
       setBreadcrumbs(
@@ -17,20 +20,42 @@ const BreadcrumbSet = ({ page }: { page: "home" | "dashboard" }) => {
                 link: "/",
               },
             ]
-          : page === "dashboard"
+          : page === "generate-file"
             ? [
                 {
                   label: "Home",
                   link: "/",
                 },
                 {
-                  label: "Dashboard",
-                  link: "/dashboard",
+                  label: "Generate File",
+                  link: "/generate-file",
                 },
               ]
-            : [],
+            : page === "upload-file"
+              ? [
+                  {
+                    label: "Home",
+                    link: "/",
+                  },
+                  {
+                    label: "Upload File",
+                    link: "/upload-file",
+                  },
+                ]
+              : page === "admin"
+                ? [
+                    {
+                      label: "Home",
+                      link: "/",
+                    },
+                    {
+                      label: "Admin",
+                      link: "/admin",
+                    },
+                  ]
+                : [],
       ),
-    [setBreadcrumbs, pathname, page],
+    [setBreadcrumbs, page],
   );
   return null;
 };

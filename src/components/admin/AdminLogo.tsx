@@ -13,14 +13,14 @@ const AdminLogo = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
-              href="/admin-login"
+              href="/admin"
               className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
             >
               <LuLock className="h-5 w-5" />
-              <span className="sr-only">Admin Login</span>
+              <span className="sr-only">Admin</span>
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right">Admin Login</TooltipContent>
+          <TooltipContent side="right">Admin</TooltipContent>
         </Tooltip>
       </nav>
     );
