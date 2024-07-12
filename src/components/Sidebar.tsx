@@ -4,12 +4,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  LuHome,
-  LuPackage,
-  LuUploadCloud,
-  LuTrash2,
-} from "react-icons/lu";
+import { LuHome, LuPackage, LuUploadCloud, LuTrash2 } from "react-icons/lu";
 import AdminLogo from "./admin/AdminLogo";
 
 const Sidebar = () => {
@@ -28,27 +23,35 @@ const Sidebar = () => {
             href: "/",
             icon: <LuHome className="h-5 w-5" />,
             label: "Home",
+            disabled: true,
           },
           {
             href: "/generate-file",
             icon: <LuPackage className="h-5 w-5" />,
             label: "Generate File",
+            disabled: false,
           },
           {
             href: "/send-to-void",
             icon: <LuUploadCloud className="h-5 w-5" />,
             label: "Upload File",
+            disabled: false,
           },
         ].map((item, idx) => (
           <Tooltip key={idx}>
             <TooltipTrigger asChild>
-              <Link
-                href={item.href}
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+              <button
+                disabled={item.disabled}
+                className="disabled:pointer-events-none disabled:hidden disabled:cursor-not-allowed"
               >
-                {item.icon}
-                <span className="sr-only">{item.label}</span>
-              </Link>
+                <Link
+                  href={item.href}
+                  className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                >
+                  {item.icon}
+                  <span className="sr-only">{item.label}</span>
+                </Link>
+              </button>
             </TooltipTrigger>
             <TooltipContent side="right">{item.label}</TooltipContent>
           </Tooltip>

@@ -1,56 +1,65 @@
-import {
-  LuChevronLeft,
-  LuChevronRight,
-  LuCopy,
-  LuCreditCard,
-  LuFile,
-  LuListFilter,
-  LuMoreVertical,
-  LuTruck,
-} from "react-icons/lu";
+"use client";
+// import {
+//   LuChevronLeft,
+//   LuChevronRight,
+//   LuCopy,
+//   LuCreditCard,
+//   LuFile,
+//   LuListFilter,
+//   LuMoreVertical,
+//   LuTruck,
+// } from "react-icons/lu";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-} from "@/components/ui/pagination";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// import { Badge } from "@/components/ui/badge";
+// import { Button } from "@/components/ui/button";
+// import {
+//   Card,
+//   CardContent,
+//   CardDescription,
+//   CardFooter,
+//   CardHeader,
+//   CardTitle,
+// } from "@/components/ui/card";
+// import {
+//   DropdownMenu,
+//   DropdownMenuCheckboxItem,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuLabel,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
+// import {
+//   Pagination,
+//   PaginationContent,
+//   PaginationItem,
+// } from "@/components/ui/pagination";
+// import { Progress } from "@/components/ui/progress";
+// import { Separator } from "@/components/ui/separator";
+// import {
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableHead,
+//   TableHeader,
+//   TableRow,
+// } from "@/components/ui/table";
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BreadcrumbSet from "@/components/BreadcrumbSet";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    void router.push("/send-to-void");
+  }, [router]);
+
   return (
     <>
       <BreadcrumbSet page="home" />
-      <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
+      {/* <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
         <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
             <Card className="sm:col-span-2" x-chunk="dashboard-05-chunk-0">
@@ -483,7 +492,7 @@ export default function Home() {
             </CardFooter>
           </Card>
         </div>
-      </main>
+      </main> */}
     </>
   );
 }
