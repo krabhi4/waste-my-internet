@@ -6,7 +6,7 @@ import { useEffect } from "react";
 const BreadcrumbSet = ({
   page,
 }: {
-  page: "home" | "generate-file" | "upload-file" | "admin";
+  page: "home" | "generate-file" | "upload-file" | "admin" | "data-waster";
 }) => {
   const { setBreadcrumbs } = useBreadcrumbStore();
 
@@ -53,7 +53,18 @@ const BreadcrumbSet = ({
                       link: "/admin",
                     },
                   ]
-                : [],
+                : page === "data-waster"
+                  ? [
+                      {
+                        label: "Home",
+                        link: "/",
+                      },
+                      {
+                        label: "Data Waster",
+                        link: "/data-waster",
+                      },
+                    ]
+                  : [],
       ),
     [setBreadcrumbs, page],
   );

@@ -11,9 +11,15 @@ datasource db {
 }
 
 model Upload {
-    id       String  @id @default(cuid())
+    id       String  @id @db.Uuid
     size     Int?
     fileName String?
     userId   String?
     response Json?
+}
+
+model DataWaster {
+    id          String  @id @db.Uuid
+    totalWasted Int?
+    userId      String?
 }
