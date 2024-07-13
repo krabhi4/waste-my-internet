@@ -18,13 +18,14 @@ import {
 } from "react-icons/lu";
 import { useBreadcrumbStore } from "@/store";
 import { useState } from "react";
+import { ThemeToggle } from "./theme-toggler";
 
 const Header = () => {
   const { breadcrumbs } = useBreadcrumbStore();
   const [open, setOpen] = useState<boolean>(false);
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-background sm:px-6">
+    <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-background sm:px-6">
       <Sheet open={open} onOpenChange={(value) => setOpen(value)}>
         <SheetTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">
@@ -42,11 +43,11 @@ const Header = () => {
               <span className="sr-only">WMI</span>
             </Link>
             {[
-              {
-                href: "/",
-                icon: <LuHome className="h-5 w-5" />,
-                label: "Home",
-              },
+              // {
+              //   href: "/",
+              //   icon: <LuHome className="h-5 w-5" />,
+              //   label: "Home",
+              // },
               {
                 href: "/generate-file",
                 icon: <LuPackage className="h-5 w-5" />,
@@ -71,7 +72,7 @@ const Header = () => {
           </nav>
         </SheetContent>
       </Sheet>
-      <Breadcrumb className="hidden md:flex">
+      <Breadcrumb className="hidden sm:flex">
         <BreadcrumbList>
           {breadcrumbs.map((breadcrumb, idx) => (
             <>
@@ -85,6 +86,7 @@ const Header = () => {
           ))}
         </BreadcrumbList>
       </Breadcrumb>
+      <ThemeToggle />
     </header>
   );
 };

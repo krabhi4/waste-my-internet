@@ -2,6 +2,8 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import axios from "axios";
 import { TRPCClientError } from "@trpc/client";
+import { type NextRequest, NextResponse } from "next/server";
+import { headers } from "next/headers";
 
 export const uploadRouter = createTRPCRouter({
   upload: publicProcedure

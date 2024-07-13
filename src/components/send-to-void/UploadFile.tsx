@@ -20,6 +20,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { formatSize, formatSpeed } from "@/utils/formatSpeed";
 
 interface FileUploadResponse {
   autoDelete: boolean;
@@ -50,6 +51,9 @@ const UploadFile = () => {
   const [file, setFile] = useState<File | File[] | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
+  const [uploadSpeed, setUploadSpeed] = useState<number>(0);
+  const [uploadedSize, setUploadedSize] = useState<number>(0);
+  const [totalSize, setTotalSize] = useState<number>(0);
 
   const { data: ip } = api.upload.getIp.useQuery();
 
@@ -68,20 +72,40 @@ const UploadFile = () => {
     if (!file) return;
 
     const formData = new FormData();
+    let totalFileSize = 0;
     if (Array.isArray(file)) {
-      file.forEach((f, index) => formData.append(`file${index}`, f));
+      file.forEach((f, index) => {
+        formData.append(`file${index}`, f);
+        totalFileSize += f.size;
+      });
     } else {
       formData.append("file", file);
+      totalFileSize = file.size;
     }
+    setTotalSize(totalFileSize);
 
     setIsUploading(true);
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "https://httpbin.org/post", true);
 
+    let startTime = Date.now();
+    let lastLoaded = 0;
+
     xhr.upload.onprogress = (event) => {
       if (event.lengthComputable) {
         const percentComplete = (event.loaded / event.total) * 100;
         setProgress(percentComplete);
+        setUploadedSize(event.loaded);
+
+        const currentTime = Date.now();
+        const elapsedTime = (currentTime - startTime) / 1000; // in seconds
+        const loadDifference = event.loaded - lastLoaded;
+        const speed = loadDifference / elapsedTime; // bytes per second
+
+        setUploadSpeed(speed);
+
+        startTime = currentTime;
+        lastLoaded = event.loaded;
       }
     };
 
@@ -156,6 +180,12 @@ const UploadFile = () => {
           />
         </div>
         {progress > 0 && <Progress className="mt-5" value={progress} />}
+        {isUploading && progress > 0 && (
+          <div className="mt-2 text-sm">
+            <p>{`${formatSize(uploadedSize)} / ${formatSize(totalSize)} (${progress.toFixed(2)}%)`}</p>
+            <p>{`Upload speed: ${formatSpeed(uploadSpeed)}`}</p>
+          </div>
+        )}
       </CardContent>
       <CardFooter className="justify-center gap-x-3">
         <Button

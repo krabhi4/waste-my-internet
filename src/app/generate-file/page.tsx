@@ -18,6 +18,13 @@ import { NumberInput } from "@mantine/core";
 import { useState } from "react";
 import { LuAlertTriangle, LuLoader2 } from "react-icons/lu";
 import { toast } from "sonner";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 function GenerateFilePage() {
   const [fileSize, setFileSize] = useState<number>(0);
@@ -92,12 +99,12 @@ function GenerateFilePage() {
   return (
     <>
       <BreadcrumbSet page="generate-file" />
-      <div className="flex min-h-[80dvh] flex-col items-center justify-center bg-gray-100">
-        <div className="rounded-lg bg-white p-8 shadow-md">
-          <div>
-            <h2 className="mb-2 text-center text-xl font-semibold">
-              Generate Empty File
-            </h2>
+      <div className="flex min-h-[80dvh] flex-col items-center justify-center">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle className="text-center">Generate Empty File</CardTitle>
+          </CardHeader>
+          <CardContent>
             <div className="flex w-full items-center">
               <NumberInput
                 styles={{
@@ -139,28 +146,27 @@ function GenerateFilePage() {
             </div>
 
             {progress > 0 && <Progress className="mt-5" value={progress} />}
-
-            <div className="mt-5 flex items-center justify-center gap-x-3">
-              <Button
-                disabled={fileSize === 0 || isLoading}
-                onClick={generateAndDownloadFile}
-              >
-                {isLoading && <LuLoader2 className="mr-2 animate-spin" />}
-                Generate and Download File
-              </Button>
-              <Tooltip>
-                <TooltipTrigger>
-                  <LuAlertTriangle color="red" />
-                </TooltipTrigger>
-                <TooltipContent side="right">
-                  {fileSize === 0 && "Please enter a valid file size."}
-                  <br />
-                  Caution: Please enter filesize less than your empty RAM!!!
-                </TooltipContent>
-              </Tooltip>
-            </div>
-          </div>
-        </div>
+          </CardContent>
+          <CardFooter className="justify-center gap-x-3">
+            <Button
+              disabled={fileSize === 0 || isLoading}
+              onClick={generateAndDownloadFile}
+            >
+              {isLoading && <LuLoader2 className="mr-2 animate-spin" />}
+              Generate and Download File
+            </Button>
+            <Tooltip>
+              <TooltipTrigger>
+                <LuAlertTriangle color="red" />
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                {fileSize === 0 && "Please enter a valid file size."}
+                <br />
+                Caution: Please enter filesize less than your empty RAM!!!
+              </TooltipContent>
+            </Tooltip>
+          </CardFooter>
+        </Card>
       </div>
     </>
   );

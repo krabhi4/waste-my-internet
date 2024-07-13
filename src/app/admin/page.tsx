@@ -36,8 +36,11 @@ function AdminLoginPage() {
   const [rowSelection, setRowSelection] = useState<Record<number, boolean>>({});
   const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [verifiedLoading, setVerifiedLoading] = useState<boolean>(true);
 
   const { isVerified, setIsVerified } = useIsVerifiedStore();
+
+  useEffect(() => setVerifiedLoading(false), [isVerified]);
 
   const {
     data: otpData,
@@ -162,7 +165,7 @@ function AdminLoginPage() {
     getSortedRowModel: getSortedRowModel(),
   });
 
-  if (!isVerified) {
+  if (!isVerified && !verifiedLoading) {
     return (
       <>
         <BreadcrumbSet page="admin" />
@@ -221,18 +224,19 @@ function AdminLoginPage() {
       </>
     );
   }
-  if (isVerified) {
+  if (isVerified && !verifiedLoading) {
     return (
       <>
         <BreadcrumbSet page="admin" />
-        <div className="min-h-[85dvh] bg-white">
-          <div className="flex grow items-center justify-end bg-gray-50 px-5 py-1 pb-2.5 md:px-10">
+        <div className="min-h-[85dvh]">
+          <div className="flex grow items-center justify-end px-5 py-1 pb-2.5 md:px-10">
             <Button
               disabled={selectedRowIds.length === 0 || isLoading || isPending}
               className="w-32"
               onClick={() => mutate(selectedRowIds)}
             >
-              {isPending && <LuLoader2 className="mr-2 animate-spin" />}Delete
+              {isPending && <LuLoader2 className="mr-2 animate-spin" />}
+              Delete
             </Button>
           </div>
           <div className="mt-2.5 px-2 md:px-5">
@@ -242,6 +246,14 @@ function AdminLoginPage() {
       </>
     );
   }
+  return (
+    <>
+      <BreadcrumbSet page="admin" />
+      <div className="flex min-h-[85dvh] items-center justify-center">
+        <LuLoader2 className="animate-spin" />
+      </div>
+    </>
+  );
 }
 
 export default AdminLoginPage;

@@ -10,6 +10,7 @@ import { TRPCReactProvider } from "@/trpc/react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import MainLayout from "@/components/main-layout";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Waste My Internet",
@@ -21,15 +22,26 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html
+      lang="en"
+      className={`${GeistSans.variable}`}
+      suppressHydrationWarning
+    >
       <body>
         <TRPCReactProvider>
-          <MantineProvider>
-            <TooltipProvider>
-              <MainLayout>{children}</MainLayout>
-              <Toaster closeButton duration={5000} position="bottom-right" />
-            </TooltipProvider>
-          </MantineProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <MantineProvider>
+              <TooltipProvider>
+                <MainLayout>{children}</MainLayout>
+                <Toaster closeButton duration={5000} position="bottom-right" />
+              </TooltipProvider>
+            </MantineProvider>
+          </ThemeProvider>
         </TRPCReactProvider>
       </body>
     </html>
