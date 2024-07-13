@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import {
-  LuHome,
   LuPackage,
   LuPanelLeft,
   LuTrash2,

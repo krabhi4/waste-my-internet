@@ -4,7 +4,12 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { LuHome, LuPackage, LuUploadCloud, LuTrash2 } from "react-icons/lu";
+import {
+  LuHome,
+  LuPackage,
+  LuUploadCloud,
+  LuTrash2,
+} from "react-icons/lu";
 import AdminLogo from "./admin/AdminLogo";
 import { Suspense } from "react";
 
