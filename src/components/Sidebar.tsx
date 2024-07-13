@@ -10,6 +10,7 @@ import {
   LuUploadCloud,
   LuTrash2,
   LuGithub,
+  LuSignal,
 } from "react-icons/lu";
 import AdminLogo from "./admin/AdminLogo";
 import { Suspense } from "react";
@@ -42,6 +43,12 @@ const Sidebar = () => {
             href: "/send-to-void",
             icon: <LuUploadCloud className="h-5 w-5" />,
             label: "Upload File",
+            disabled: false,
+          },
+          {
+            href: "/data-waster",
+            icon: <LuSignal className="h-5 w-5" />,
+            label: "Data Waster",
             disabled: false,
           },
         ].map((item, idx) => (
