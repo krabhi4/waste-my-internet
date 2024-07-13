@@ -75,7 +75,7 @@ const useDataWaster = ({
     }
 
     for (let i = 0; i < threads; i++) {
-      const ws = new WebSocket(env.WEBSOCKET_URL);
+      const ws = new WebSocket(env.NEXT_PUBLIC_WEBSOCKET_URL);
 
       ws.onopen = () => {
         wasteData(ws);
