@@ -20,14 +20,14 @@ import {
   MdAccessTime,
 } from "react-icons/md";
 import useDataWaster from "@/lib/hooks/data-waster";
+import { api } from "@/trpc/react";
 
 function DataWasterPage() {
   const [fileSize, setFileSize] = useState<number>(0);
-  const [fileSizeUnit, setFileSizeUnit] = useState<"KB" | "MB" | "GB" | "TB">(
-    "KB",
-  );
+  const [fileSizeUnit, setFileSizeUnit] = useState<"MB" | "GB" | "TB">("MB");
   const [unlimitedData, setUnlimitedData] = useState<boolean>(true);
   const [threads, setThreads] = useState<number>(5);
+  const [id, setId] = useState<string>("");
 
   const {
     wasting,
@@ -42,6 +42,14 @@ function DataWasterPage() {
     fileSizeUnit,
     threads: Math.floor(threads / 5), // Convert to actual thread count
   });
+
+  const { mutate: create } = api.dataWaster.create.useMutation({
+    onSuccess(data) {
+      setId(data?.id);
+    },
+  });
+  const { mutate: update } = api.dataWaster.update.useMutation();
+  const { data: ip } = api.upload.getIp.useQuery();
 
   const formatBytes = (bytes: number) => {
     if (bytes === 0) return "0 Bytes";
@@ -61,6 +69,17 @@ function DataWasterPage() {
   const handleWasteButtonClick = () => {
     if (wasting) {
       stopWasting();
+      if (id !== "") {
+        create({
+          totalWasted,
+          userId: !isNaN(Number(ip?.split(".")[0])) ? ip ?? "" : "",
+        });
+      }
+      update({
+        id,
+        totalWasted,
+        userId: !isNaN(Number(ip?.split(".")[0])) ? ip ?? "" : "",
+      });
     } else {
       startWasting();
     }
@@ -76,7 +95,10 @@ function DataWasterPage() {
           <p>Waste Unlimited Data?</p>
           <Switch
             checked={unlimitedData}
-            onCheckedChange={(value) => setUnlimitedData(value)}
+            onCheckedChange={(value) => {
+              setUnlimitedData(value);
+              stopWasting();
+            }}
           />
         </div>
         {!unlimitedData && (
@@ -106,14 +128,13 @@ function DataWasterPage() {
             <Select
               value={fileSizeUnit}
               onValueChange={(value) =>
-                setFileSizeUnit(value as "KB" | "MB" | "GB" | "TB")
+                setFileSizeUnit(value as "MB" | "GB" | "TB")
               }
             >
               <SelectTrigger className="w-[180px] rounded-none rounded-r-md border-l-0">
                 <SelectValue placeholder="Size Unit" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="KB">KB</SelectItem>
                 <SelectItem value="MB">MB</SelectItem>
                 <SelectItem value="GB">GB</SelectItem>
                 <SelectItem value="TB">TB</SelectItem>

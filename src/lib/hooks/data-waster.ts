@@ -1,9 +1,10 @@
+import { env } from "@/env";
 import { useState, useEffect, useRef } from "react";
 
 interface DataWasterHookProps {
   unlimitedData: boolean;
   fileSize: number;
-  fileSizeUnit: "KB" | "MB" | "GB" | "TB";
+  fileSizeUnit: "MB" | "GB" | "TB";
   threads: number;
 }
 
@@ -15,8 +16,6 @@ interface DataWasterHookResult {
   startWasting: () => void;
   stopWasting: () => void;
 }
-
-const WEBSOCKET_URL = "wss://echo.websocket.org";
 
 const useDataWaster = ({
   unlimitedData,
@@ -52,7 +51,7 @@ const useDataWaster = ({
   const wasteData = (ws: WebSocket) => {
     if (!wastingRef.current) return;
 
-    const data = new ArrayBuffer(1024 * 10); // 10KB of data
+    const data = new ArrayBuffer(1024 * 1024); // 1 MB data
     try {
       ws.send(data);
     } catch (error) {
@@ -68,7 +67,6 @@ const useDataWaster = ({
 
     if (!unlimitedData) {
       const multiplier = {
-        KB: 1024,
         MB: 1024 * 1024,
         GB: 1024 * 1024 * 1024,
         TB: 1024 * 1024 * 1024 * 1024,
@@ -77,7 +75,7 @@ const useDataWaster = ({
     }
 
     for (let i = 0; i < threads; i++) {
-      const ws = new WebSocket(WEBSOCKET_URL);
+      const ws = new WebSocket(env.WEBSOCKET_URL);
 
       ws.onopen = () => {
         wasteData(ws);

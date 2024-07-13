@@ -2,8 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import axios from "axios";
 import { TRPCClientError } from "@trpc/client";
-import { type NextRequest, NextResponse } from "next/server";
-import { headers } from "next/headers";
+import { env } from "@/env";
 
 export const uploadRouter = createTRPCRouter({
   upload: publicProcedure
@@ -25,13 +24,14 @@ export const uploadRouter = createTRPCRouter({
           fileName: file.fileName,
           size: file.size,
           userId: input.userId,
+          response: input.response,
         })),
       });
     }),
   getIp: publicProcedure.query(async () => {
     let ip;
     try {
-      const response = await axios.get("https://api.ipify.org?format=json");
+      const response = await axios.get(env.USER_ID_URL);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
       ip = response.data.ip as string;
     } catch (error) {
