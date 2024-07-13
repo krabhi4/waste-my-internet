@@ -31,4 +31,23 @@ export const dataWasterRouter = createTRPCRouter({
         },
       });
     }),
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    const data = await ctx.db.dataWaster.findMany();
+    const totalDataWasted = data.reduce(
+      (acc, curr) => acc + (curr.totalWasted ?? 0),
+      0,
+    );
+    const totalUsers = data.reduce(
+      (acc, curr) => acc + (curr.userId ? 1 : 0),
+      0,
+    );
+    return { data, totalDataWasted, totalUsers };
+  }),
+  delete: publicProcedure
+    .input(z.string().array())
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.dataWaster.deleteMany({
+        where: { id: { in: input } },
+      });
+    }),
 });

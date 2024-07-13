@@ -22,11 +22,18 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useIsVerifiedStore } from "@/store";
 import { Button } from "@/components/ui/button";
 import { LuLoader2 } from "react-icons/lu";
+import { SegmentedControl } from "@mantine/core";
 
 type AllData = {
   id: string;
   size: number | null;
   fileName: string | null;
+  userId: string | null;
+};
+
+type DataWaster = {
+  id: string;
+  totalWasted: number | null;
   userId: string | null;
 };
 
@@ -37,6 +44,7 @@ function AdminLoginPage() {
   const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [verifiedLoading, setVerifiedLoading] = useState<boolean>(true);
+  const [tableToView, setTableToView] = useState<"waster" | "upload">("upload");
 
   const { isVerified, setIsVerified } = useIsVerifiedStore();
 
@@ -58,6 +66,25 @@ function AdminLoginPage() {
     isFetching: isLoading,
     refetch,
   } = api.upload.getData.useQuery();
+
+  const {
+    data: wasterData,
+    isFetching: wasterLoading,
+    refetch: refetchWaster,
+  } = api.dataWaster.getAll.useQuery();
+
+  const { mutate: deleteWaster, isPending: wasterPending } =
+    api.dataWaster.delete.useMutation({
+      onSuccess() {
+        toast.success("Waster deleted successfully");
+        setSelectedRowIds([]);
+        setRowSelection({});
+        void refetchWaster();
+      },
+      onError(error) {
+        toast.error(`Error deleting waster: ${error.message}`);
+      },
+    });
 
   const { mutate, isPending } = api.upload.delete.useMutation({
     onSuccess() {
@@ -92,6 +119,8 @@ function AdminLoginPage() {
   }, [otpData, error, setIsVerified]);
 
   const data: AllData[] = allData ?? [];
+
+  const dataWaster: DataWaster[] = wasterData?.data ?? [];
 
   const columns: ColumnDef<AllData>[] = [
     {
@@ -151,6 +180,60 @@ function AdminLoginPage() {
     },
   ];
 
+  const columnWaster: ColumnDef<DataWaster>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          className="border-custom-blue"
+          checked={table.getIsAllPageRowsSelected()}
+          onCheckedChange={(value) => {
+            table.toggleAllPageRowsSelected(!!value);
+            const allIds = data.map((row) => row.id);
+            setSelectedRowIds(table.getIsAllPageRowsSelected() ? [] : allIds);
+          }}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          className="border-custom-blue"
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => {
+            row.toggleSelected(!!value);
+            const rowOriginal = row.original;
+            const rowId = rowOriginal.id;
+            if (value) {
+              setSelectedRowIds(
+                (prevSelectedRowIds) =>
+                  [...prevSelectedRowIds, rowId] as string[],
+              );
+            } else {
+              setSelectedRowIds((prevSelectedRowIds) =>
+                prevSelectedRowIds.filter((id) => id !== rowId),
+              );
+            }
+          }}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "id",
+      header: "ID",
+    },
+    {
+      accessorKey: "totalWasted",
+      header: "Total Wasted",
+    },
+    {
+      accessorKey: "userId",
+      header: "User ID",
+    },
+  ];
+
   const table = useReactTable({
     data,
     columns,
@@ -165,7 +248,21 @@ function AdminLoginPage() {
     getSortedRowModel: getSortedRowModel(),
   });
 
-  if (!isVerified && !verifiedLoading) {
+  const tableWaster = useReactTable({
+    data: dataWaster,
+    columns: columnWaster,
+    enableRowSelection: true,
+    state: {
+      rowSelection,
+      sorting,
+    },
+    getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    onRowSelectionChange: setRowSelection,
+    getSortedRowModel: getSortedRowModel(),
+  });
+
+  if (!isVerified && !verifiedLoading && !wasterLoading && !isFetching) {
     return (
       <>
         <BreadcrumbSet page="admin" />
@@ -224,23 +321,56 @@ function AdminLoginPage() {
       </>
     );
   }
-  if (isVerified && !verifiedLoading) {
+  if (isVerified && !verifiedLoading && !wasterLoading) {
     return (
       <>
         <BreadcrumbSet page="admin" />
         <div className="min-h-[85dvh]">
-          <div className="flex grow items-center justify-end px-5 py-1 pb-2.5 md:px-10">
+          <div className="flex grow items-center justify-end gap-x-5 px-5 py-1 pb-2.5 md:px-10">
+            <SegmentedControl
+              data={[
+                {
+                  label: "Waster",
+                  value: "waster",
+                },
+                {
+                  label: "Upload",
+                  value: "upload",
+                },
+              ]}
+              value={tableToView}
+              onChange={(value) => {
+                setTableToView(value as "waster" | "upload");
+                setSelectedRowIds([]);
+                setRowSelection({});
+              }}
+            />
             <Button
-              disabled={selectedRowIds.length === 0 || isLoading || isPending}
+              disabled={
+                tableToView === "upload"
+                  ? selectedRowIds.length === 0 || isLoading || isPending
+                  : selectedRowIds.length === 0 ||
+                    wasterLoading ||
+                    wasterPending
+              }
               className="w-32"
-              onClick={() => mutate(selectedRowIds)}
+              onClick={() => {
+                if (tableToView === "upload") {
+                  mutate(selectedRowIds);
+                }
+                deleteWaster(selectedRowIds);
+              }}
             >
               {isPending && <LuLoader2 className="mr-2 animate-spin" />}
               Delete
             </Button>
           </div>
           <div className="mt-2.5 px-2 md:px-5">
-            <DataTable table={table} columns={columns} />
+            {tableToView === "upload" ? (
+              <DataTable table={table} columns={columns} />
+            ) : (
+              <DataTable table={tableWaster} columns={columnWaster} />
+            )}
           </div>
         </div>
       </>

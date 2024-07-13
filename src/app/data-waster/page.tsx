@@ -69,17 +69,19 @@ function DataWasterPage() {
   const handleWasteButtonClick = () => {
     if (wasting) {
       stopWasting();
-      if (id !== "") {
+      if (id === "" && totalWasted > 0) {
         create({
           totalWasted,
           userId: !isNaN(Number(ip?.split(".")[0])) ? ip ?? "" : "",
         });
       }
-      update({
-        id,
-        totalWasted,
-        userId: !isNaN(Number(ip?.split(".")[0])) ? ip ?? "" : "",
-      });
+      if (id !== "" && totalWasted > 0) {
+        update({
+          id,
+          totalWasted,
+          userId: !isNaN(Number(ip?.split(".")[0])) ? ip ?? "" : "",
+        });
+      }
     } else {
       startWasting();
     }
