@@ -167,6 +167,10 @@ const UploadFile = () => {
           clearable
           onChange={(files) => setFile(files)}
           value={file}
+          aria-placeholder="Upload a file"
+          fileInputProps={{
+            "aria-labelledby": "upload-file",
+          }}
         />
         <div className="mt-3 flex items-center space-x-2">
           <Label htmlFor="multiple">Multiple?</Label>
@@ -177,6 +181,7 @@ const UploadFile = () => {
               setMultiple(check);
               setFile(null);
             }}
+            aria-label="Multiple files?"
           />
         </div>
         {progress > 0 && <Progress className="mt-5" value={progress} />}
@@ -199,7 +204,7 @@ const UploadFile = () => {
           Upload
         </Button>
         <Tooltip>
-          <TooltipTrigger>
+          <TooltipTrigger aria-label="Caution">
             <LuAlertTriangle color="red" />
           </TooltipTrigger>
           <TooltipContent side="right">
