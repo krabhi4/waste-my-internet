@@ -1,5 +1,6 @@
 import { env } from "@/env";
 import { useState, useEffect, useRef } from "react";
+import { toast } from "sonner";
 
 interface DataWasterHookProps {
   unlimitedData: boolean;
@@ -55,7 +56,7 @@ const useDataWaster = ({
     try {
       ws.send(data);
     } catch (error) {
-      console.error("Error sending data:", error);
+      toast.error(`Error sending data: ${JSON.stringify(error)}`);
     }
   };
 
@@ -114,11 +115,11 @@ const useDataWaster = ({
       };
 
       ws.onerror = (error) => {
-        console.error(`WebSocket ${i + 1} error:`, error);
+        toast.error(`WebSocket ${i + 1} error: ${JSON.stringify(error)}`);
       };
 
       ws.onclose = () => {
-        console.log(`WebSocket ${i + 1} closed`);
+        toast.error(`WebSocket ${i + 1} closed`);
       };
 
       websocketsRef.current.push(ws);

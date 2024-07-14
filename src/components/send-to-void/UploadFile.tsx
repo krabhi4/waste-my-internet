@@ -64,7 +64,6 @@ const UploadFile = () => {
     },
     onError(error) {
       toast.error(`Error uploading file: ${error.message}`);
-      console.log("Error uploading file:", error.message);
     },
   });
 
@@ -139,14 +138,12 @@ const UploadFile = () => {
         setFile(null);
         setProgress(0);
       } else {
-        console.error("Upload failed:", xhr.statusText);
         toast.error(`Error uploading file: ${xhr.statusText}`);
       }
       setIsUploading(false);
     };
 
     xhr.onerror = function () {
-      console.error("Upload error:", xhr.statusText);
       toast.error(`Error uploading file: ${xhr.statusText}`);
       setIsUploading(false);
     };

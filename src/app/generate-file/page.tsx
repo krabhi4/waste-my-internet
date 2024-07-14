@@ -86,7 +86,6 @@ function GenerateFilePage() {
         `Empty file of size ${fileSize} ${fileSizeUnit} generated and download started`,
       );
     } catch (error) {
-      console.error("Error generating file:", error);
       toast.error(
         "An error occurred while generating the file. Please try again.",
       );
