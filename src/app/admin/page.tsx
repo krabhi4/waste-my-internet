@@ -6,7 +6,13 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { toast } from "sonner";
 import { api } from "@/trpc/react";
 import BreadcrumbSet from "@/components/BreadcrumbSet";
@@ -23,6 +29,7 @@ import { useIsVerifiedStore } from "@/store";
 import { Button } from "@/components/ui/button";
 import { LuLoader2 } from "react-icons/lu";
 import { SegmentedControl } from "@mantine/core";
+import { formatSpeed } from "@/utils/formatSpeed";
 
 type AllData = {
   id: string;
@@ -330,12 +337,12 @@ function AdminLoginPage() {
             <SegmentedControl
               data={[
                 {
-                  label: "Waster",
-                  value: "waster",
-                },
-                {
                   label: "Upload",
                   value: "upload",
+                },
+                {
+                  label: "Waster",
+                  value: "waster",
                 },
               ]}
               value={tableToView}
@@ -369,7 +376,27 @@ function AdminLoginPage() {
             {tableToView === "upload" ? (
               <DataTable table={table} columns={columns} />
             ) : (
-              <DataTable table={tableWaster} columns={columnWaster} />
+              <div className="flex w-full flex-col">
+                <div className="mb-5 grid w-full grid-cols-1 gap-5 sm:grid-cols-2">
+                  <Card className="w-full">
+                    <CardHeader>
+                      <CardDescription>Total Data Wasted</CardDescription>
+                      <CardTitle className="text-4xl">
+                        {formatSpeed(wasterData?.totalDataWasted ?? 0)}
+                      </CardTitle>
+                    </CardHeader>
+                  </Card>
+                  <Card className="w-full">
+                    <CardHeader>
+                      <CardDescription>Total Users</CardDescription>
+                      <CardTitle className="text-4xl">
+                        {wasterData?.totalUsers}
+                      </CardTitle>
+                    </CardHeader>
+                  </Card>
+                </div>
+                <DataTable table={tableWaster} columns={columnWaster} />
+              </div>
             )}
           </div>
         </div>
