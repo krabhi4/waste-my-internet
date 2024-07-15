@@ -87,6 +87,7 @@ function DataWasterPage() {
               setUnlimitedData(value);
               stopWasting();
             }}
+            aria-label="Waste Unlimited Data"
           />
         </div>
         {!unlimitedData && (
@@ -153,6 +154,8 @@ function DataWasterPage() {
           marks={marks}
           step={5}
           className="mb-5"
+          name="threads"
+          thumbLabel="threads"
         />
         <Button className="group w-40" onClick={handleWasteButtonClick}>
           {wasting ? (
