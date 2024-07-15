@@ -159,7 +159,7 @@ const UploadFile = () => {
       <CardContent>
         <FileInput
           className="w-full"
-          placeholder="Upload a file"
+          placeholder={<span className="text-black">Upload a file</span>}
           multiple={multiple}
           clearable
           onChange={(files) => setFile(files)}
