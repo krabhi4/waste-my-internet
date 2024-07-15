@@ -133,7 +133,10 @@ function GenerateFilePage() {
                   setFileSizeUnit(value as "KB" | "MB" | "GB")
                 }
               >
-                <SelectTrigger className="w-[180px] rounded-none rounded-r-md border-l-0">
+                <SelectTrigger
+                  className="w-[180px] rounded-none rounded-r-md border-l-0"
+                  aria-label="Size Unit"
+                >
                   <SelectValue placeholder="Size Unit" />
                 </SelectTrigger>
                 <SelectContent>
@@ -155,7 +158,7 @@ function GenerateFilePage() {
               Generate and Download File
             </Button>
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger aria-label="Caution">
                 <LuAlertTriangle color="red" />
               </TooltipTrigger>
               <TooltipContent side="right">
