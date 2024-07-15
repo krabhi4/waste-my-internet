@@ -164,7 +164,6 @@ const UploadFile = () => {
           clearable
           onChange={(files) => setFile(files)}
           value={file}
-          aria-placeholder="Upload a file"
           fileInputProps={{
             "aria-labelledby": "upload-file",
           }}
