@@ -8,12 +8,12 @@ import {
   LuHome,
   LuPackage,
   LuUploadCloud,
-  LuTrash2,
   LuGithub,
   LuSignal,
 } from "react-icons/lu";
 import AdminLogo from "./admin/AdminLogo";
 import { Suspense } from "react";
+import { Logo } from "./icons";
 
 const Sidebar = () => {
   return (
@@ -23,8 +23,8 @@ const Sidebar = () => {
           href="/"
           className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
-          <LuTrash2 className="h-4 w-4 transition-all group-hover:scale-110" />
-          <span className="sr-only">WMI</span>
+          <Logo className="h-8 w-8 transition-all group-hover:scale-110" />
+          <span className="sr-only">Waste My Internet</span>
         </Link>
         {[
           {
